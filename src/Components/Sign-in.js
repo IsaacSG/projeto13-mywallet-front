@@ -1,14 +1,16 @@
-import React, {useState} from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { BaseAPI } from "../Global Data/Data";
 import Logo from "../Styles/Images/Mywallet.png";
+import userContext from "../Context/UserContext";
 
 export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const {setUser} = useContext(userContext);
     const navigate = useNavigate();
 
     function Entrar() {
@@ -17,6 +19,7 @@ export default function Login() {
         const promisse = axios.post(`${BaseAPI}/login`, body);
 
         promisse.then(response => {
+            setUser({token:response.data.token , name:response.data.name})
             navigate("/home")
         })
 
